@@ -1,4 +1,9 @@
--- This class should be saved in Roblox as a ModuleScript
+--[[
+StatefulObjectClass ModuleScript
+
+This ModuleScript implements a StatefulObject abstract
+class. Subclasses should use the `subclass` function.
+--]]
 
 -- The class is implemented as a Lua table
 local StatefulObject = {
