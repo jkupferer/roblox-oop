@@ -1,3 +1,10 @@
+--[[
+LightClass ModuleScript
+
+This ModuleScript implements a Light class, meant for
+representing light fixtures and lamps.
+--]]
+
 -- Load StatefulObject base class
 local StatefulObject = require(workspace.Modules.StatefulObjectClass)
 
@@ -43,25 +50,31 @@ function Light:init()
 
 	-- Light responds to state change...
 	self.State.Changed:Connect(function (value)
-		self:_handleStateChange(value)
+		self:handleStateChange(value)
 	end)
 end
 
-function Light:_handleStateChange(value)
-	-- Recurse through object structure, enabling or disabling
-	-- all Light objects. Also set material of Light source
-	-- parent object to match light state.
-	local function setLightSourcesEnabled(parent, enabled)
-		for _, child in ipairs(parent:GetChildren()) do
-			if child:IsA('Light') then
-				child.Enabled = enabled
-				child.Parent.Material = self.LightMaterial[value]
-			else
-				setLightSourcesEnabled(child, enabled)
-			end
+function Light:handleStateChange(value, parent)
+	-- Recurse through model structure, calling
+	-- handleStateChangeForLight for each Light in
+	-- the model
+	parent = parent or self.Model
+	for _, child in ipairs(parent:GetChildren()) do
+		if child:IsA('Light') then
+			self:handleStateChangeForLight(value, child)
+		else
+			self:handleStateChange(value, child)
 		end
 	end
-	setLightSourcesEnabled(self.Model, value == self.On)
+end
+
+function Light:handleStateChangeForLight(value, light)
+	-- Enable light if state is On
+	light.Enabled = value == self.On
+	-- Set material on light if parent is named "Bulb"
+	if light.Parent.Name == 'Bulb' then
+		light.Parent.Material = self.LightMaterial[value]
+	end
 end
 
 -- Turn light on by setting state to On
@@ -83,4 +96,5 @@ function Light:ToggleLightState()
 	end
 end
 
+-- Return the class table from the ModuleScript
 return Light
