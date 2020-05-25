@@ -10,6 +10,8 @@ local StatefulObject = require(workspace.Modules.StatefulObjectClass)
 
 -- Create subclass of Light with class variables
 local Light = StatefulObject:subclass({
+	ClassName = 'Light',
+
 	-- Light State Values
 	On = 1,
 	Off = 2,
@@ -52,6 +54,7 @@ function Light:init()
 	self.State.Changed:Connect(function (value)
 		self:handleStateChange(value)
 	end)
+	self:handleStateChange(self.State.Value)
 end
 
 function Light:handleStateChange(value, parent)
