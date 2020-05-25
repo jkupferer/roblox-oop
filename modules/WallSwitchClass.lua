@@ -13,6 +13,8 @@ local StatefulObject = require(workspace.Modules.StatefulObjectClass)
 
 -- Make subclass of StatefulObject, setting class variables
 local WallSwitch = StatefulObject:subclass({
+	ClassName = 'WallSwitch',
+
 	-- Time it takes for the switch to move
 	FlipTime = 0.2,
 
@@ -29,19 +31,19 @@ local WallSwitch = StatefulObject:subclass({
 })
 
 function WallSwitch:new(o)
-  -- If passed only a Model, then put into a table.
+	-- If passed only a Model, then put into a table.
 	if not o then error('WallSwitch requires a Model') end
 	if o.IsA and o:IsA('Model') then o = { Model = o } end
 
-  -- Make object table into an instance of WallSwitch
-  setmetatable(o, self)
+	-- Make object table into an instance of WallSwitch
+	setmetatable(o, self)
 	self.__index = self
 
-  -- Initialize object
-  o:init()
+	-- Initialize object
+	o:init()
 
-  -- Return the object
-  return o
+	-- Return the object
+	return o
 end
 
 -- Initialize the WallSwitch by finding the switch part
@@ -68,12 +70,12 @@ function WallSwitch:init()
 	-- Chain to base class init
 	StatefulObject.init(self)
 
-  -- Now that initial state is set, make sure light switch position
-  -- reflects this
-	self:_setSwitchOrientation()
+	-- Now that initial state is set, make sure light switch position
+	-- reflects this
+	self:setSwitchOrientation()
 end
 
-function WallSwitch:_setSwitchOrientation()
+function WallSwitch:setSwitchOrientation()
 	local orientation = self.SwitchOrientation[self.State.Value]
 	if orientation then
 		self.SwitchPart.Orientation = orientation
