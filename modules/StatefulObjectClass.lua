@@ -7,6 +7,8 @@ class. Subclasses should use the `subclass` function.
 
 -- The class is implemented as a Lua table
 local StatefulObject = {
+	ClassName = 'StatefulObject',
+
 	-- State is tracked as enumeration.
 	-- State 1 is the default initial state.
 	InitialState = 1,
