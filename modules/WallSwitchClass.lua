@@ -1,4 +1,11 @@
--- Get TweenService from game
+--[[
+WallSwitchClass ModuleScript
+
+This ModuleScript implements a WallSwitch class, meant
+for representing wall switches for electrical circuits.
+--]]
+
+-- Get TweenService from game, used to move the switches
 local TweenService = game:GetService('TweenService')
 
 -- Get StatefulObject base class from ModuleScript
@@ -113,4 +120,5 @@ function WallSwitch:FlipSwitchDown(event)
 	self.Tween:Play()	
 end
 
+-- Return the class table from the ModuleScript
 return WallSwitch
